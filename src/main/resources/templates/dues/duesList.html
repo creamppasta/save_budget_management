@@ -7,8 +7,19 @@
         body { background-color: #f8f9fa; }
         .container { max-width: 1100px; margin-top: 50px; }
         .table-box { background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        th, td { vertical-align: middle !important; text-align: center; }
+
+        /* 테이블 레이아웃 교정 */
+        .table { table-layout: fixed; width: 100%; }
+        th, td {
+            vertical-align: middle !important;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .search-area { background-color: #fff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #dee2e6; }
+        .btn-header { margin-bottom: 15px; }
     </style>
     <title>회비 납부 내역</title>
 </head>
@@ -36,37 +47,37 @@
         </form>
     </div>
 
-    <div class="btn-header d-flex justify-content-end mb-3 gap-2">
-        <a href="/dues/unpaid" class="btn btn-outline-info" th:if="${session.loginMember == 'ADMIN'}">🔍 미납자 명단 조회</a>
+    <div class="btn-header d-flex justify-content-end mb-3">
+        <a href="/dues/unpaid" class="btn btn-outline-info">🔍 미납자 명단 조회</a>
     </div>
 
     <div class="table-box">
         <table class="table table-hover" th:if="${!isResultEmpty}">
             <thead class="thead-light">
             <tr>
-                <th style="width: 10%">이름</th>
-                <th style="width: 15%">학번</th>
-                <th style="width: 15%">납부 금액</th>
-                <th style="width: 10%">학기</th>
+                <th style="width: 12%">이름</th>
+                <th style="width: 18%" th:if="${session.loginMember == 'ADMIN'}">학번</th>
+                <th style="width: 18%">납부 금액</th>
+                <th style="width: 12%">학기</th>
                 <th style="width: 15%">납부 날짜</th>
                 <th style="width: 15%">비고</th>
-                <th style="width: 15%">관리</th>
+                <th style="width: 15%" th:if="${session.loginMember == 'ADMIN'}">관리</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="dues : ${duesList}">
                 <td th:text="${dues.member.name}" class="font-weight-bold">이름</td>
-                <td th:text="${dues.member.studentId}">학번</td>
+                <td th:text="${dues.member.studentId}" th:if="${session.loginMember == 'ADMIN'}">학번</td>
                 <td th:text="${#numbers.formatInteger(dues.amount, 0, 'COMMA')} + '원'" class="text-primary font-weight-bold">금액</td>
                 <td th:text="${dues.semester}">학기</td>
                 <td th:text="${dues.paymentDate}">날짜</td>
                 <td th:text="${dues.note}" class="text-muted">비고</td>
-                <td>
+                <td th:if="${session.loginMember == 'ADMIN'}">
                     <div class="btn-group btn-group-sm">
-                        <a th:href="@{/dues/{id}/edit(id=${dues.id})}" class="btn btn-outline-primary" th:if="${session.loginMember == 'ADMIN'}">수정</a>
+                        <a th:href="@{/dues/{id}/edit(id=${dues.id})}" class="btn btn-outline-primary">수정</a>
                         <form th:action="@{/dues/{id}/delete(id=${dues.id})}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-sm btn-outline-danger"
-                                    onclick="return confirm('정말 삭제하시겠습니까?');" th:if="${session.loginMember == 'ADMIN'}">삭제</button>
+                                    onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
                         </form>
                     </div>
                 </td>

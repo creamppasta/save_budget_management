@@ -36,17 +36,17 @@
             <thead class="thead-light">
             <tr>
                 <th>이름</th>
-                <th>학번</th>
-                <th>학과</th>
-                <th>전화번호</th>
+                <th th:if="${session.loginMember == 'ADMIN'}">학번</th>
+                <th th:if="${session.loginMember == 'ADMIN'}">학과</th>
+                <th th:if="${session.loginMember == 'ADMIN'}">전화번호</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="member : ${unpaidMembers}">
                 <td th:text="${member.name}" class="font-weight-bold"></td>
-                <td th:text="${member.studentId}"></td>
-                <td th:text="${member.department}"></td>
-                <td th:text="${member.phoneNumber}"></td>
+                <td th:text="${member.studentId}" th:if="${session.loginMember == 'ADMIN'}"></td>
+                <td th:text="${member.department}" th:if="${session.loginMember == 'ADMIN'}"></td>
+                <td th:text="${member.phoneNumber}" th:if="${session.loginMember == 'ADMIN'}"></td>
             </tr>
             </tbody>
         </table>

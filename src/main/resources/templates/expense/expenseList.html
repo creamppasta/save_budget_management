@@ -53,7 +53,7 @@
                 <td th:text="${expense.expenseDate}">2024-02-10</td>
                 <td th:text="${expense.category}" class="font-weight-bold">카테고리</td>
                 <td th:text="${#numbers.formatInteger(expense.amount, 0, 'COMMA')} + '원'" class="text-danger font-weight-bold">금액</td>
-                <td th:text="${expense.detail}" class="text-left">세부사항</td>
+                <td th:text="${expense.detail}" class="text-center">세부사항</td>
                 <td>
                     <a th:if="${expense.receiptUrl != null and expense.receiptUrl != ''}"
                        th:href="${expense.receiptUrl}" target="_blank" class="badge badge-info p-2">보기</a>

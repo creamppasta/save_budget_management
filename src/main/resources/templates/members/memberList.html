@@ -41,23 +41,23 @@
         <table class="table table-hover" th:if="${!isResultEmpty}">
             <thead class="thead-light">
             <tr>
-                <th style="width: 5%">#</th>
-                <th style="width: 10%">이름</th>
-                <th style="width: 15%">학번</th>
-                <th style="width: 15%">학과</th>
-                <th style="width: 15%">전화번호</th>
-                <th style="width: 15%">가입일</th>
-                <th style="width: 10%">비고</th>
-                <th style="width: 15%">관리</th>
+                <th style="width: 5%" th:if="${session.loginMember == 'ADMIN'}">#</th>
+                <th th:style="${session.loginMember == 'ADMIN'} ? 'width: 10%' : 'width: 30%'">이름</th>
+                <th style="width: 15%" th:if="${session.loginMember == 'ADMIN'}">학번</th>
+                <th style="width: 15%" th:if="${session.loginMember == 'ADMIN'}">학과</th>
+                <th style="width: 15%" th:if="${session.loginMember == 'ADMIN'}">전화번호</th>
+                <th th:style="${session.loginMember == 'ADMIN'} ? 'width: 15%' : 'width: 40%'">가입일</th>
+                <th th:style="${session.loginMember == 'ADMIN'} ? 'width: 10%' : 'width: 30%'">비고</th>
+                <th style="width: 15%" th:if="${session.loginMember == 'ADMIN'}">관리</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="member : ${members}">
-                <td th:text="${member.id}">1</td>
+                <td th:text="${member.id}" th:if="${session.loginMember == 'ADMIN'}">1</td>
                 <td th:text="${member.name}" class="font-weight-bold">홍길동</td>
-                <td th:text="${member.studentId}">20231234</td>
-                <td th:text="${member.department}">컴퓨터공학과</td>
-                <td th:text="${member.phoneNumber}">010-1234-5678</td>
+                <td th:text="${member.studentId}" th:if="${session.loginMember == 'ADMIN'}">20231234</td>
+                <td th:text="${member.department}" th:if="${session.loginMember == 'ADMIN'}">컴퓨터공학과</td>
+                <td th:text="${member.phoneNumber}" th:if="${session.loginMember == 'ADMIN'}">010-1234-5678</td>
                 <td th:text="${member.joinDate}">2024-02-09</td>
                 <td th:text="${member.etc}">없음</td>
                 <td>
