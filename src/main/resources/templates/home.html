@@ -35,7 +35,7 @@
         <a class="btn btn-expense" href="/expenses">지출 내역 조회</a>
     </div>
 
-    <div class="menu-group" th:if="${session.loginMember == 'ADMIN'}">
+    <div class="menu-group">
         <h3>📊 회계 요약</h3>
         <p>현재 잔액: <span th:text="${balance != null ? #numbers.formatInteger(balance, 0, 'COMMA') : 0}">99999</span>원</p>
     </div>
