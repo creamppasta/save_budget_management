@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 900px; margin-top: 50px; }
+        .table-box {
+            background-color: white; padding: 30px;
+            border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        th, td { vertical-align: middle !important; text-align: center; }
+    </style>
+    <title>미납자 명단 조회</title>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>🔍 미납자 명단 조회</h2>
+        <p class="lead text-muted">학기별 회비 미납 인원을 확인하세요</p>
+    </div>
+
+    <div class="table-box mb-4">
+        <form action="/dues/unpaid" method="get" class="form-inline justify-content-center">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" name="semester" class="form-control" th:value="${semester}" placeholder="예: 2026-1" required>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">미납자 조회</button>
+        </form>
+    </div>
+
+    <div class="table-box" th:if="${unpaidMembers != null}">
+        <h5 class="mb-4"><span th:text="${semester}" class="text-primary"></span>학기 미납자 목록</h5>
+        <table class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th>이름</th>
+                <th>학번</th>
+                <th>학과</th>
+                <th>전화번호</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member : ${unpaidMembers}">
+                <td th:text="${member.name}" class="font-weight-bold"></td>
+                <td th:text="${member.studentId}"></td>
+                <td th:text="${member.department}"></td>
+                <td th:text="${member.phoneNumber}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${unpaidMembers.isEmpty()}" class="text-center py-4 text-success">
+            🎉 해당 학기에는 모든 회원이 회비를 납부했습니다!
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="/" class="btn btn-secondary px-4">홈으로</a>
+        <a href="/dues" class="btn btn-info px-4">전체 납부 내역</a>
+    </div>
+</div>
+</body>
+</html>

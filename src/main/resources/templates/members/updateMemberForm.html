@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container { max-width: 560px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>회원 정보 수정</h2>
+    </div>
+
+    <form th:action="@{/members/{id}/edit(id=${form.id})}" th:object="${form}" method="post">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="이름 입력" required>
+        </div>
+
+        <div class="form-group">
+            <label for="studentId">학번</label>
+            <input type="text" th:field="*{studentId}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="department">학과</label>
+            <input type="text" th:field="*{department}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber">전화번호</label>
+            <input type="text" th:field="*{phoneNumber}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="etc">기타사항</label>
+            <textarea th:field="*{etc}" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" th:if="${session.loginMember == 'ADMIN'}">수정 완료</button>
+        <a href="/members" class="btn btn-secondary btn-block">취소</a>
+    </form>
+
+</div>
+</body>
+</html>

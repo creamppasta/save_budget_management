@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 560px;
+            margin-top: 50px;
+        }
+    </style>
+    <title>회비 지출 수정</title>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>🔄 회비 지출 수정</h2>
+    </div>
+
+    <form th:action="@{/expenses/{id}/edit (id=${expenseId})}" th:object="${form}" method="post">
+        <div class="form-group">
+            <label>지출 카테고리</label>
+            <input type="text" th:field="*{category}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>지출 금액 (원)</label>
+            <input type="number" th:field="*{amount}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>지출 일자</label>
+            <input type="date" th:field="*{expenseDate}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>세부 사항</label>
+            <textarea th:field="*{detail}" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>증빙 자료 URL</label>
+            <input type="text" th:field="*{receiptUrl}" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-danger btn-block" th:if="${session.loginMember == 'ADMIN'}">수정 완료</button>
+        <a href="/expenses" class="btn btn-secondary btn-block">취소</a>
+    </form>
+</div>
+</body>
+</html>

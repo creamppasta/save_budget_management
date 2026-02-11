@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 560px;
+            margin-top: 50px;
+        }
+    </style>
+    <title>회비 납부 등록</title>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>💰 회비 납부 등록</h2>
+    </div>
+
+    <form action="/dues/new" method="post">
+        <div class="form-group">
+            <label for="memberId">납부 회원</label>
+            <select id="memberId" name="memberId" class="form-control" required>
+                <option value="">회원을 선택하세요</option>
+                <option th:each="member : ${members}"
+                        th:value="${member.id}"
+                        th:text="${member.name} + ' (' + ${member.studentId} + ')'" />
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">납부 금액 (원)</label>
+            <input type="number" id="amount" name="amount" class="form-control" placeholder="금액을 입력하세요" required>
+        </div>
+
+        <div class="form-group">
+            <label for="semester">납부 학기</label>
+            <input type="text" id="semester" name="semester" class="form-control" placeholder="예: 2026-1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="paymentDate">납부 일자</label>
+            <input type="date" id="paymentDate" name="paymentDate" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="note">비고 (기타 사항)</label>
+            <textarea id="note" name="note" class="form-control" rows="3" placeholder="특이사항이 있다면 적어주세요"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" th:if="${session.loginMember == 'ADMIN'}">등록하기</button>
+        <a href="/" class="btn btn-secondary btn-block">취소</a>
+    </form>
+</div>
+</body>
+</html>

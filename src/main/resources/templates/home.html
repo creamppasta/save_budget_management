@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>동아리 회비 관리 시스템</title>
+    <style>
+        .container { width: 500px; margin: 0 auto; text-align: center; }
+        .menu-group { margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; }
+        .btn { display: inline-block; padding: 10px 20px; margin: 5px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+        .btn-expense { background-color: #007bff; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>SAVE 회비 관리 프로그램</h1>
+    <hr>
+
+    <div class="menu-group">
+        <h3>👤 회원 관리</h3>
+        <a class="btn" href="/members/new" th:if="${session.loginMember == 'ADMIN'}">회원 등록</a>
+        <a class="btn" href="/members">회원 목록</a>
+    </div>
+
+    <div class="menu-group">
+        <h3>💰 회비 납부 관리</h3>
+        <a class="btn" href="/dues/new" th:if="${session.loginMember == 'ADMIN'}">납부 등록</a>
+        <a class="btn" href="/dues">납부 내역 조회</a>
+    </div>
+
+    <div class="menu-group">
+        <h3>💸 회비 지출 관리</h3>
+        <a class="btn btn-expense" href="/expenses/new" th:if="${session.loginMember == 'ADMIN'}">지출 등록</a>
+        <a class="btn btn-expense" href="/expenses">지출 내역 조회</a>
+    </div>
+
+    <div class="menu-group" th:if="${session.loginMember == 'ADMIN'}">
+        <h3>📊 회계 요약</h3>
+        <p>현재 잔액: <span th:text="${balance != null ? #numbers.formatInteger(balance, 0, 'COMMA') : 0}">99999</span>원</p>
+    </div>
+</div>
+</body>
+</html>

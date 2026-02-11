@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 1100px; margin-top: 50px; }
+        .table-box { background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        th, td { vertical-align: middle !important; text-align: center; }
+        .search-area { background-color: #fff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #dee2e6; }
+    </style>
+    <title>회원 목록</title>
+</head>
+<body>
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2>👥 회원 목록</h2>
+        <p class="lead text-muted">등록된 회원을 관리하세요</p>
+    </div>
+
+    <div class="search-area shadow-sm">
+        <form th:action="@{/members}" method="get" class="form-row justify-content-center">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <input type="text" name="searchText" class="form-control"
+                           placeholder="이름 또는 학과로 검색" th:value="${param.searchText}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary px-4">검색</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <a href="/members" class="btn btn-light border px-3">초기화</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-box">
+        <table class="table table-hover" th:if="${!isResultEmpty}">
+            <thead class="thead-light">
+            <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 10%">이름</th>
+                <th style="width: 15%">학번</th>
+                <th style="width: 15%">학과</th>
+                <th style="width: 15%">전화번호</th>
+                <th style="width: 15%">가입일</th>
+                <th style="width: 10%">비고</th>
+                <th style="width: 15%">관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member : ${members}">
+                <td th:text="${member.id}">1</td>
+                <td th:text="${member.name}" class="font-weight-bold">홍길동</td>
+                <td th:text="${member.studentId}">20231234</td>
+                <td th:text="${member.department}">컴퓨터공학과</td>
+                <td th:text="${member.phoneNumber}">010-1234-5678</td>
+                <td th:text="${member.joinDate}">2024-02-09</td>
+                <td th:text="${member.etc}">없음</td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a th:href="@{/members/{id}/edit(id=${member.id})}" class="btn btn-outline-primary"
+                           th:if="${session.loginMember == 'ADMIN'}">수정</a>
+                        <a th:href="@{/members/{id}/delete(id=${member.id})}" class="btn btn-outline-danger"
+                           onclick="return confirm('정말 삭제하시겠습니까?');" th:if="${session.loginMember == 'ADMIN'}">삭제</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${isResultEmpty}" class="text-center py-5">
+            <div class="mb-3" style="font-size: 40px;">👥</div>
+            <h4 class="text-muted">조건에 맞는 회원이 없습니다.</h4>
+            <p class="text-secondary small">새로운 회원을 등록하거나 검색어를 확인해 주세요.</p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="/" class="btn btn-secondary px-4">홈으로 돌아가기</a>
+        <a href="/members/new" class="btn btn-primary px-4" th:if="${session.loginMember == 'ADMIN'}">회원 등록하기</a>
+    </div>
+
+</div> </body>
+</html>

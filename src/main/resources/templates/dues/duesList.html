@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 1100px; margin-top: 50px; }
+        .table-box { background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        th, td { vertical-align: middle !important; text-align: center; }
+        .search-area { background-color: #fff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #dee2e6; }
+    </style>
+    <title>회비 납부 내역</title>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>💰 회비 납부 내역</h2>
+        <p class="lead text-muted">동아리원들의 회비 납부 현황을 관리하세요</p>
+    </div>
+
+    <div class="search-area shadow-sm">
+        <form th:action="@{/dues}" method="get" class="form-row align-items-end justify-content-center">
+            <div class="col-md-3">
+                <label class="small font-weight-bold">회원 이름</label>
+                <input type="text" name="name" class="form-control" placeholder="이름 입력" th:value="${param.name}">
+            </div>
+            <div class="col-md-3">
+                <label class="small font-weight-bold">이후 날짜 검색</label>
+                <input type="date" name="date" class="form-control" th:value="${param.date}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary px-4">조회하기</button>
+                <a href="/dues" class="btn btn-light border px-3">초기화</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="btn-header d-flex justify-content-end mb-3 gap-2">
+        <a href="/dues/unpaid" class="btn btn-outline-info" th:if="${session.loginMember == 'ADMIN'}">🔍 미납자 명단 조회</a>
+    </div>
+
+    <div class="table-box">
+        <table class="table table-hover" th:if="${!isResultEmpty}">
+            <thead class="thead-light">
+            <tr>
+                <th style="width: 10%">이름</th>
+                <th style="width: 15%">학번</th>
+                <th style="width: 15%">납부 금액</th>
+                <th style="width: 10%">학기</th>
+                <th style="width: 15%">납부 날짜</th>
+                <th style="width: 15%">비고</th>
+                <th style="width: 15%">관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="dues : ${duesList}">
+                <td th:text="${dues.member.name}" class="font-weight-bold">이름</td>
+                <td th:text="${dues.member.studentId}">학번</td>
+                <td th:text="${#numbers.formatInteger(dues.amount, 0, 'COMMA')} + '원'" class="text-primary font-weight-bold">금액</td>
+                <td th:text="${dues.semester}">학기</td>
+                <td th:text="${dues.paymentDate}">날짜</td>
+                <td th:text="${dues.note}" class="text-muted">비고</td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a th:href="@{/dues/{id}/edit(id=${dues.id})}" class="btn btn-outline-primary" th:if="${session.loginMember == 'ADMIN'}">수정</a>
+                        <form th:action="@{/dues/{id}/delete(id=${dues.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('정말 삭제하시겠습니까?');" th:if="${session.loginMember == 'ADMIN'}">삭제</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${isResultEmpty}" class="text-center py-5">
+            <div class="mb-3" style="font-size: 40px;">🔍</div>
+            <h4 class="text-muted">납부 내역이 존재하지 않습니다.</h4>
+            <p class="text-secondary small">검색 조건을 변경하거나 새로운 내역을 등록해 주세요.</p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="/" class="btn btn-secondary px-4">홈으로 돌아가기</a>
+        <a href="/dues/new" class="btn btn-success px-4" th:if="${session.loginMember == 'ADMIN'}">회비 납부 등록</a>
+    </div>
+</div>
+</body>
+</html>

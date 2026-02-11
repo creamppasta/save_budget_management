@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .login-form { max-width: 330px; margin: 100px auto; }
+    </style>
+</head>
+<body class="text-center">
+<form class="login-form" th:action="@{/login}" method="post">
+    <h1 class="h3 mb-3 font-weight-normal">SAVE</h1>
+    <p class="text-muted">비밀번호를 입력하세요</p>
+
+    <input type="password" name="password" class="form-control mb-2" placeholder="Password" required autofocus>
+
+    <div th:if="${param.error}" class="alert alert-danger p-1 small">
+        비밀번호가 일치하지 않습니다.
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">접속하기</button>
+</form>
+</body>
+</html>

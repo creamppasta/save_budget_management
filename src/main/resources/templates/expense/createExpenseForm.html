@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 560px;
+            margin-top: 50px;
+        }
+    </style>
+    <title>회비 지출 등록</title>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>💸 회비 지출 등록</h2>
+    </div>
+
+    <form action="/expenses/new" method="post">
+        <div class="form-group">
+            <label for="category">지출 카테고리</label>
+            <input type="text" id="category" name="category" class="form-control" placeholder="예: 식비, 대관료, 비품" required>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">지출 금액 (원)</label>
+            <input type="number" id="amount" name="amount" class="form-control" placeholder="금액을 입력하세요" required>
+        </div>
+
+        <div class="form-group">
+            <label for="expenseDate">지출 일자</label>
+            <input type="date" id="expenseDate" name="expenseDate" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="detail">세부 사항</label>
+            <textarea id="detail" name="detail" class="form-control" rows="3" placeholder="지출에 대한 상세 내용을 입력하세요"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="receiptUrl">증빙 자료 URL (선택)</label>
+            <input type="text" id="receiptUrl" name="receiptUrl" class="form-control" placeholder="영수증 이미지 링크 등">
+        </div>
+
+        <button type="submit" class="btn btn-danger btn-block" th:if="${session.loginMember == 'ADMIN'}">등록하기</button>
+        <a href="/" class="btn btn-secondary btn-block">취소</a>
+    </form>
+</div>
+</body>
+</html>

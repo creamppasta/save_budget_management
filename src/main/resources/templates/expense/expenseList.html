@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 1100px; margin-top: 50px; }
+        .table-box { background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        th, td { vertical-align: middle !important; text-align: center; }
+        .search-area { background-color: #fff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #dee2e6; }
+    </style>
+    <title>회비 지출 내역</title>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>💸 회비 지출 내역</h2>
+        <p class="lead text-muted">예산 지출 및 영수증 증빙 내역을 관리하세요</p>
+    </div>
+
+    <div class="search-area shadow-sm">
+        <form th:action="@{/expenses}" method="get" class="form-row align-items-end justify-content-center">
+            <div class="col-md-3">
+                <label class="small font-weight-bold">지출 내용(세부 사항)</label>
+                <input type="text" name="detail" class="form-control" placeholder="내용 입력" th:value="${param.detail}">
+            </div>
+            <div class="col-md-3">
+                <label class="small font-weight-bold">이후 날짜 검색</label>
+                <input type="date" name="date" class="form-control" th:value="${param.date}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-danger px-4">조회하기</button>
+                <a href="/expenses" class="btn btn-light border px-3">초기화</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-box">
+        <table class="table table-hover" th:if="${!isResultEmpty}">
+            <thead class="thead-light">
+            <tr>
+                <th style="width: 15%">지출 날짜</th>
+                <th style="width: 15%">카테고리</th>
+                <th style="width: 15%">지출 금액</th>
+                <th style="width: 25%">세부 사항</th>
+                <th style="width: 10%">증빙</th>
+                <th style="width: 20%">관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="expense : ${expenses}">
+                <td th:text="${expense.expenseDate}">2024-02-10</td>
+                <td th:text="${expense.category}" class="font-weight-bold">카테고리</td>
+                <td th:text="${#numbers.formatInteger(expense.amount, 0, 'COMMA')} + '원'" class="text-danger font-weight-bold">금액</td>
+                <td th:text="${expense.detail}" class="text-left">세부사항</td>
+                <td>
+                    <a th:if="${expense.receiptUrl != null and expense.receiptUrl != ''}"
+                       th:href="${expense.receiptUrl}" target="_blank" class="badge badge-info p-2">보기</a>
+                    <span th:unless="${expense.receiptUrl != null and expense.receiptUrl != ''}" class="text-muted">-</span>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a th:href="@{/expenses/{id}/edit(id=${expense.id})}" class="btn btn-outline-primary" th:if="${session.loginMember == 'ADMIN'}">수정</a>
+                        <form th:action="@{/expenses/{id}/delete(id=${expense.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('정말 삭제하시겠습니까?');" th:if="${session.loginMember == 'ADMIN'}">삭제</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${isResultEmpty}" class="text-center py-5">
+            <div class="mb-3" style="font-size: 40px;">💸</div>
+            <h4 class="text-muted">지출 내역이 존재하지 않습니다.</h4>
+            <p class="text-secondary small">검색어를 바꾸거나 전체 목록을 확인해 보세요.</p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="/" class="btn btn-secondary px-4">홈으로 돌아가기</a>
+        <a href="/expenses/new" class="btn btn-danger px-4" th:if="${session.loginMember == 'ADMIN'}">지출 내역 등록</a>
+    </div>
+</div>
+</body>
+</html>

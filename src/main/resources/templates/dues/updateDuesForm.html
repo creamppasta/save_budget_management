@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 560px;
+            margin-top: 50px;
+        }
+    </style>
+    <title>회비 납부 수정</title>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>🔄 회비 납부 수정</h2>
+        <p class="lead text-muted" th:text="${form.memberName} + ' 님의 납부 내역 수정'"></p>
+    </div>
+
+    <form th:action="@{/dues/{id}/edit (id=${duesId})}" th:object="${form}" method="post">
+        <div class="form-group">
+            <label>납부 금액 (원)</label>
+            <input type="number" th:field="*{amount}" class="form-control" placeholder="금액을 입력하세요" required>
+        </div>
+
+        <div class="form-group">
+            <label>납부 학기</label>
+            <input type="text" th:field="*{semester}" class="form-control" placeholder="예: 2026-1" required>
+        </div>
+
+        <div class="form-group">
+            <label>납부 일자</label>
+            <input type="date" th:field="*{paymentDate}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>비고 (기타 사항)</label>
+            <textarea th:field="*{note}" class="form-control" rows="3" placeholder="수정할 특이사항을 입력하세요"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" th:if="${session.loginMember == 'ADMIN'}">수정 완료</button>
+        <a href="/dues" class="btn btn-secondary btn-block">취소</a>
+    </form>
+</div>
+</body>
+</html>

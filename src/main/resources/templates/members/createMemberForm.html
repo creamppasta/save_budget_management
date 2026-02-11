@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 560px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>회원 등록</h2>
+    </div>
+
+    <form action="/members/new" method="post">
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요" required>
+        </div>
+
+        <div class="form-group">
+            <label for="studentId">학번</label>
+            <input type="text" id="studentId" name="studentId" class="form-control" placeholder="예: 20231234">
+        </div>
+
+        <div class="form-group">
+            <label for="department">학과</label>
+            <input type="text" id="department" name="department" class="form-control" placeholder="예: 컴퓨터공학과">
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber">전화번호</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="010-XXXX-XXXX">
+        </div>
+
+        <div class="form-group">
+            <label for="etc">기타사항</label>
+            <textarea id="etc" name="etc" class="form-control" placeholder="특이사항이 있다면 적어주세요"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" th:if="${session.loginMember == 'ADMIN'}">등록하기</button>
+        <a href="/" class="btn btn-secondary btn-block">취소</a>
+    </form>
+
+</div>
+</body>
+</html>
